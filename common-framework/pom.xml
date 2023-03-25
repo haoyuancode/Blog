@@ -85,12 +85,7 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>3.0.5</version>
-            <scope>test</scope>
-        </dependency>
+        
 
     </dependencies>
 

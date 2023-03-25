@@ -1,5 +1,6 @@
 package com.mason.controller;
 
+import com.mason.domain.ResponseResult;
 import com.mason.entity.Article;
 import com.mason.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,12 @@ public class ArticleController {
     @GetMapping("/list")
     public List<Article> test(){
         return articleService.list();
+    }
+
+    @GetMapping("/hotArticleList")
+    public ResponseResult hotArticleList(){
+        ResponseResult result = articleService.hotArticleList();
+        return  result;
     }
 
 }

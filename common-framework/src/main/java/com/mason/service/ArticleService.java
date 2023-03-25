@@ -1,6 +1,7 @@
 package com.mason.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mason.domain.ResponseResult;
 import com.mason.entity.Article;
 
 /**
@@ -11,5 +12,6 @@ import com.mason.entity.Article;
  */
 public interface ArticleService extends IService<Article> {
 
+    ResponseResult hotArticleList();
 }
 
