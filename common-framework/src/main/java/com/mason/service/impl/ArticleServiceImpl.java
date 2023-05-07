@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mason.constants.SystemConstants;
 import com.mason.domain.ResponseResult;
+import com.mason.domain.vo.ArticleDetailVo;
 import com.mason.domain.vo.ArticleListVo;
 import com.mason.domain.vo.HotArticleVo;
 import com.mason.domain.vo.PageVo;
@@ -56,6 +57,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return ResponseResult.okResult(hotArticleVos);
     }
 
+    //文章列表(前端首页以及分类列表都要用，根据分类id判断是首页还是分类列表)
     @Override
     public ResponseResult articleList(Integer pageNum, Integer pageSize, Long cateGoryId) {
 
@@ -88,6 +90,29 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
         PageVo pageVo = new PageVo(articleListVos,page.getTotal());
         return ResponseResult.okResult(pageVo);
+    }
+
+    //文章详情接口
+    @Override
+    public ResponseResult getArticleDetail(Long id) {
+        LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
+        //根据文章id查询
+        Article article = getById(id);
+        //转换Vo
+        //bean拷贝
+        List<ArticleDetailVo> articleDetailVos = new ArrayList<>();
+        ArticleDetailVo articleVo = new ArticleDetailVo();
+        BeanUtils.copyProperties(article,articleVo);
+        articleDetailVos.add(articleVo);
+
+        //根据分类id查询分类名
+        Category categoryById = categoryService.getById(articleVo.getCategoryId());
+        if (categoryById != null){
+            articleVo.setCategoryName(categoryById.getName());
+        }
+
+        //返回结果
+        return ResponseResult.okResult(articleVo);
     }
 }
 
