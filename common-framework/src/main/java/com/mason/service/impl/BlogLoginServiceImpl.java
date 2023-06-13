@@ -4,18 +4,23 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mason.config.JwtUtil;
 import com.mason.config.RedisCache;
 import com.mason.domain.ResponseResult;
+import com.mason.domain.vo.BlogUserLoginVo;
+import com.mason.domain.vo.UserInfoVo;
 import com.mason.entity.Article;
 import com.mason.entity.LoginUser;
 import com.mason.mapper.ArticleMapper;
 import com.mason.service.ArticleService;
 import com.mason.service.BlogLoginService;
 import entity.User;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -48,6 +53,9 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         //把用户信息存入redis
         redisCache.setCacheObject("bloglogin"+userId,loginUser);
         //把token和userInfo封装 返回
-        return null;
+        BlogUserLoginVo blogUserLoginVo = new BlogUserLoginVo();
+        BeanUtils.copyProperties(loginUser.getUser(),blogUserLoginVo);
+        blogUserLoginVo.setToken(jwt);
+        return ResponseResult.okResult(blogUserLoginVo);
     }
 }
